@@ -40,22 +40,49 @@ module Pushable
   end
 
   module ClassMethods
-    def broadcast(event, association, *options)
-      @broadcast_events_and_options ||= {}
-      @broadcast_events_and_options[event] ||={}
-      @broadcast_events_and_options[event][association] = options
+    def push(*args)
+      options = args.extract_options!
+      args = [ :all ] if args.empty?
+      options[:on] ||= :all
+      options[:to] ||= :self
+
+      @pushes ||= {}
+      Array.wrap(options[:on]).each do |event|
+        @pushes[event] ||={}
+        args.each do |attribute|
+          @pushes[event][attribute] = Array.wrap options[:to]
+        end
+      end
     end
 
-    def broadcast_event?(event)
-      @broadcast_events_and_options.include? event
+    def push_event?(event)
+      if defined? @pushes
+        @pushes.include? event or
+        @pushes.empty? or
+        @pushes.include? :all
+      else
+        true
+      end
     end
 
-    def broadcast_to(event)
-      @broadcast_events_and_options[event].keys
+    def push_changes_for?(event, attributes)
+      if defined? @pushes
+        Array.wrap(attributes).push(:all).any? do |attribute|
+          (@pushes[:all].keys + (@pushes[event].try(keys) || [])).include? attribute
+        end
+      else
+        true
+      end
     end
 
-    def broadcast_conditioned?(event, association)
-      !@broadcast_events_and_options[event][association].blank?
+    def push_changes_to(event, attributes)
+      if defined? @pushes
+        @pushes.values_at(:all, :update).inject([]) do |list, attribute_and_pushes|
+          (list + (attribute_and_pushes.try(:values_at, :all, :name) || [])).flatten.uniq.reject(&:nil?)
+        end
+      else
+        [ :self ]
+      end
     end
   end
 end
