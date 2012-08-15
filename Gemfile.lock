@@ -35,19 +35,23 @@ GEM
     activesupport (3.2.8)
       i18n (~> 0.6)
       multi_json (~> 1.0)
-    archive-tar-minitar (0.5.2)
     arel (3.0.2)
     bson (1.6.4)
     builder (3.0.0)
     columnize (0.3.6)
+    debugger (1.2.0)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.1.1)
+      debugger-ruby_core_source (~> 1.1.3)
+    debugger-linecache (1.1.2)
+      debugger-ruby_core_source (>= 1.1.1)
+    debugger-ruby_core_source (1.1.3)
     diff-lcs (1.1.3)
     erubis (2.7.0)
     hike (1.2.1)
     i18n (0.6.0)
     journey (1.0.4)
     json (1.7.4)
-    linecache19 (0.5.12)
-      ruby_core_source (>= 0.1.4)
     mail (2.4.4)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -96,16 +100,6 @@ GEM
     rspec-expectations (2.11.2)
       diff-lcs (~> 1.1.3)
     rspec-mocks (2.11.2)
-    ruby-debug-base19 (0.11.25)
-      columnize (>= 0.3.1)
-      linecache19 (>= 0.5.11)
-      ruby_core_source (>= 0.1.4)
-    ruby-debug19 (0.11.6)
-      columnize (>= 0.3.1)
-      linecache19 (>= 0.5.11)
-      ruby-debug-base19 (>= 0.11.19)
-    ruby_core_source (0.1.5)
-      archive-tar-minitar (>= 0.5.2)
     sprockets (2.1.3)
       hike (~> 1.2)
       rack (~> 1.0)
@@ -122,7 +116,7 @@ PLATFORMS
 
 DEPENDENCIES
   bson
+  debugger
   mm-pushable!
   rake
   rspec
-  ruby-debug19
